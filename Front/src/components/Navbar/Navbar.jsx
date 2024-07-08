@@ -4,10 +4,16 @@ import { useState } from 'react';
 import { FaCartArrowDown, FaSearch } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { LuLogIn } from "react-icons/lu";
+import { CgLogOut } from "react-icons/cg";
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../store/authSlice';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
     const [scrolling, setScrolling] = useState(false)
     const [isSearchClicked, setIsSearchClicked] = useState(false)
+    const { user } = useSelector(state => state.auth)
+    const dispatch = useDispatch()
 
     function handleScroll() {
         const offset = window.scrollY
@@ -22,7 +28,7 @@ const Navbar = () => {
         <nav className={`${scrolling ? "bg-[#5c4dfdd8]" : "bg-transparent"} transition-colors duration-300 fixed top-0 left-0 w-full p-4`}>
             <div className="container mx-auto flex justify-between items-center">
                 <div className="text-white text-lg font-bold">
-                    <Link to="/"> Company Name </Link>
+                    <Link to="/"> ThaCompany </Link>
                 </div>
                 <div className="flex items-center space-x-6">
                     <Link to="/products" className="text-white hover:underline">
@@ -42,7 +48,10 @@ const Navbar = () => {
                         </button>
                     </div>
                     <div className='text-white'>
-                        <Link to="/login"><LuLogIn size={20} /></Link>
+                        {user ?
+                            <Link to="/" onClick={() => dispatch(logout()) && toast.success("Succesfully Logged Out")}><CgLogOut size={20} /></Link> :
+                            <Link to="/login"><LuLogIn size={20} /></Link>
+                        }
                     </div>
                 </div>
             </div>

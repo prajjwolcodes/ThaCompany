@@ -4,6 +4,8 @@ import heroSectionImage from "../../assets/images/heroSectionImage.jpg"
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/authSlice';
 
 
 function LoginPage() {
@@ -11,6 +13,7 @@ function LoginPage() {
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -20,7 +23,7 @@ function LoginPage() {
             toast.success(res.data.message)
             console.log(res.data);
             res.data.user.role == "customer" ? navigate("/") : navigate("/dashboard")
-            localStorage.setItem("user", JSON.stringify(res.data.user))
+            dispatch(login({ user: res.data.user, token: res.data.token }))
         } catch (error) {
             toast.error(error.response.data.message);
         }

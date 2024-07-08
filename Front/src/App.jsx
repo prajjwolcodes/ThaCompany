@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import { Toaster } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import bags from "./assets/images/products/Bags.jpg"
 import Loading from './components/Loader/Loading'
@@ -15,6 +16,18 @@ const Search = lazy(() => import("./components/search/Search"))
 const Dashboard = lazy(() => import("./components/Admin/Dashboard"))
 
 const App = () => {
+  const user = useSelector((state) => state.auth.user)
+  let routes;
+
+  if (user?.role == "admin") {
+    routes = (
+      <React.Fragment>
+        <Route path='/dashboard' element={<Dashboard />} />
+      </React.Fragment>
+    )
+
+  }
+
   return (
     <>
       <BrowserRouter>
@@ -33,7 +46,7 @@ const App = () => {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/signup' element={<SignupPage />} />
 
-
+            {routes}
             {/* ADMIN ROUTES  */}
           </Routes>
           {/* <ProtectedRoute path='/dashboard' element={<Dashboard />} /> */}

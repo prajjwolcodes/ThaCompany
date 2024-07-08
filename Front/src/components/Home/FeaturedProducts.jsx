@@ -1,9 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const FeaturedProducts = ({ image, name, price }) => {
+    const navigate = useNavigate()
     return (
-        <div className='flex flex-col gap-10 px-10'>
-            <h1 className='text-4xl text-center font-semibold'>Featured Products</h1>
+        <div className='flex flex-col gap-10 px-10 mb-16'>
+            <div className="relative flex items-center">
+                <h1 className='text-4xl font-semibold mx-auto'>Featured Products</h1>
+                <button onClick={() => navigate("/products")} className='absolute right-0'>View More</button>
+            </div>
+
             <div className='flex justify-between'>
                 <div className="max-w-[300px] rounded overflow-hidden shadow-lg bg-white">
                     <img className="w-full" src={image} alt={name} />
